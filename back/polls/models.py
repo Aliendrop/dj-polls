@@ -1,5 +1,4 @@
 from django.db import models
-from django.conf import settings
 
 
 class CommonModel(models.Model):
@@ -18,3 +17,22 @@ class Poll(CommonModel):
 
     def __str__(self):
         return self.title
+
+
+class Question(models.Model):
+    AS_TEXT = 'text'
+    SELECT = 'select-one'
+    SELECT_MULTIPLE = 'select-multiple'
+
+    QUESTION_TYPES = (
+        (AS_TEXT, 'Answer as text'),
+        (SELECT, 'Answer as select one'),
+        (SELECT_MULTIPLE, 'Answer as select multiple'),
+    )
+
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    text = models.TextField()
+    question_type = models.CharField(max_length=64, choices=QUESTION_TYPES, default=AS_TEXT)
+
+    def __str__(self):
+        return self.get_question_type_display()
