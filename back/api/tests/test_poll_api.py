@@ -65,12 +65,21 @@ class PollApiTest(CommonTest, APITestCase):
         polls_count = Poll.objects.all().count()
         self.assertEqual(polls_count, 0)
 
-    def test_staff_can_edit_polls(self):
+    def test_staff_can_edit_polls_wo_start_date(self):
         self._do_login(self.the_staff_user)
         self._create_polls(status.HTTP_201_CREATED, polls_count=1, expect_polls=1)
 
         new_poll_data = _get_polls_data(val=7)
 
+        response = self.client.patch(
+            reverse('polls-detail', args=['1']),
+            data=json.dumps(new_poll_data),
+            content_type='application/json'
+        )
+        self.assertTrue('start_at' in response.data)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+        new_poll_data.pop('start_at')
         response = self.client.patch(
             reverse('polls-detail', args=['1']),
             data=json.dumps(new_poll_data),

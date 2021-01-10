@@ -8,7 +8,7 @@ DEFAULT_PASSWORD = 'ManaMana!'
 
 
 class CommonTest(TestCase):
-    """ Initial with dummy user """
+    """ Initial with dummy users """
     @classmethod
     def setUpTestData(cls):
         cls.the_client_user = create_test_user(username=CLIENT_USERNAME)
