@@ -35,4 +35,4 @@ class Question(models.Model):
     question_type = models.CharField(max_length=64, choices=QUESTION_TYPES, default=AS_TEXT)
 
     def __str__(self):
-        return self.get_question_type_display()
+        return f'{self.poll} - {self.get_question_type_display()}'

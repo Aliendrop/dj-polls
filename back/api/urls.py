@@ -1,4 +1,10 @@
-from django.urls import path
+from rest_framework import routers
+
+from .views import PollViewSet
 
 
-urlpatterns = []
+router = routers.DefaultRouter()
+router.register(r'polls', PollViewSet, basename='polls')
+
+
+urlpatterns = router.urls
