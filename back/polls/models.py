@@ -1,4 +1,8 @@
 from django.db import models
+from django.conf import settings
+import uuid
+
+from django.db.models.deletion import SET_NULL
 
 
 class CommonModel(models.Model):
@@ -36,3 +40,22 @@ class Question(models.Model):
 
     def __str__(self):
         return f'{self.poll} - {self.get_question_type_display()}'
+
+
+class Response(CommonModel):
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='responses')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=SET_NULL)
+    identifier = models.UUIDField(default=uuid.uuid4, editable=False)
+    confirm = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.identifier)
+
+
+class Answer(CommonModel):
+    response = models.ForeignKey(Response, on_delete=models.CASCADE, related_name='answers')
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='answers')
+    text = models.TextField()
+
+    def __str__(self):
+        return repr(self.question)

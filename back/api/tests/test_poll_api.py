@@ -8,7 +8,7 @@ from polls.models import Poll, Question
 from .common import CommonTest, DEFAULT_PASSWORD
 
 
-def _get_polls_data(val=0):
+def _get_polls_data(val=0) -> dict:
     return {
         "title": f"test-{val}",
         "description": f"test description-{val}",
@@ -16,7 +16,7 @@ def _get_polls_data(val=0):
         "end_at": f"2021-0{val}-10T18:00:00.000000Z"
     }
 
-def _get_questions_data(val=0):
+def _get_questions_data(val=0) -> dict:
     return {
         "text": f"test-question-{val}",
         "question_type": Question.SELECT_MULTIPLE

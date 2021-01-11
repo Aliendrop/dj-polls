@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.urls import reverse
 
-from polls.models import Poll, Question
+from polls.models import Poll, Question, Response, Answer
 
 
 class QuestionForPollSerializer(serializers.HyperlinkedModelSerializer):
@@ -20,6 +20,7 @@ class PollSerializer(serializers.ModelSerializer):
     questions = QuestionForPollSerializer(many=True, required=False)
     url_poll_detail = serializers.HyperlinkedIdentityField(view_name='polls-detail')
     url_add_question = serializers.HyperlinkedIdentityField(view_name='polls-question')
+    url_register_response = serializers.HyperlinkedIdentityField(view_name='response')
 
     def create(self, validated_data):
         try:
@@ -43,3 +44,15 @@ class PollSerializer(serializers.ModelSerializer):
         model = Poll
         fields = '__all__'
         extra_field = ['url_detail', 'url_question', ]
+
+
+class ResponseSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Response
+        fields = ['id', 'user', 'identifier', 'created_at', ]
+
+
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = ['text', ]
