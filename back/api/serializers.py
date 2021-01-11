@@ -17,7 +17,7 @@ class QuestionForPollSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class PollSerializer(serializers.ModelSerializer):
-    questions = QuestionForPollSerializer(many=True)
+    questions = QuestionForPollSerializer(many=True, required=False)
     url_poll_detail = serializers.HyperlinkedIdentityField(view_name='polls-detail')
     url_add_question = serializers.HyperlinkedIdentityField(view_name='polls-question')
 
