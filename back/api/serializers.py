@@ -47,6 +47,7 @@ class PollSerializer(serializers.ModelSerializer):
 
 
 class ResponseSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Response
         fields = ['id', 'user', 'identifier', 'created_at', ]
@@ -56,3 +57,20 @@ class AnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answer
         fields = ['text', ]
+
+
+class ResponseForUserSerializer(serializers.ModelSerializer):
+    poll = PollSerializer()
+    url_detail = serializers.HyperlinkedIdentityField(view_name='user-detail', lookup_field="id", lookup_url_kwarg="response_id")
+
+    class Meta:
+        model = Response
+        fields = ['id', 'user', 'identifier', 'created_at', 'poll', 'url_detail', ]
+
+
+class ResponseDetailForUserSerializer(serializers.ModelSerializer):
+    question = QuestionForPollSerializer()
+
+    class Meta:
+        model = Answer
+        fields = '__all__'

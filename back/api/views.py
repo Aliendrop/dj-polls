@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import generics, status, permissions
 from django.http import Http404
 
-from polls.models import Poll, Question
+from polls.models import Answer, Poll, Question
 from polls.models import Response as Responce_
 from .serializers import AnswerSerializer, PollSerializer, QuestionForPollSerializer, ResponseSerializer
+from .serializers import ResponseForUserSerializer, ResponseDetailForUserSerializer
 from .permissions import IsAdminUserOrReadOnly
 
 
@@ -68,3 +69,23 @@ def question_answer(request, question_pk, pk):
             serializer.save(question_id=question_pk, response_id=pk)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserResponseList(generics.ListAPIView):
+    queryset = Responce_.objects.all().select_related('poll', 'user')
+    serializer_class = ResponseForUserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        user_id = self.kwargs['user_id']   # TODO:
+        return Responce_.objects.filter(user=user_id)
+
+
+class UserResponseDetail(generics.ListAPIView):
+    queryset = Answer.objects.all().select_related('responce', 'question')
+    serializer_class = ResponseDetailForUserSerializer
+    permission_classes = [permissions.AllowAny]
+
+    def get_queryset(self):
+        response_id = self.kwargs['response_id']   # TODO:
+        return Answer.objects.filter(response=response_id)
