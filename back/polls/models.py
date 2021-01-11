@@ -30,7 +30,7 @@ class Question(models.Model):
         (SELECT_MULTIPLE, 'Answer as select multiple'),
     )
 
-    poll = models.ForeignKey(Poll, on_delete=models.CASCADE)
+    poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='questions')
     text = models.TextField()
     question_type = models.CharField(max_length=64, choices=QUESTION_TYPES, default=AS_TEXT)
 

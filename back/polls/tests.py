@@ -33,8 +33,8 @@ class PollsAppModelsTest(TestCase):
 
         self.assertEqual(poll.title, self.poll_title)
         self.assertEqual(poll.description, self.poll_desc)
-        self.assertEqual(poll.start_at.date(), self.current_dt.date())
-        self.assertEqual(poll.end_at.date(), self.current_dt.date() + timedelta(days=3))
+        self.assertEqual(timezone.localtime(poll.start_at).hour, self.current_dt.hour)
+        self.assertEqual(timezone.localtime(poll.end_at).date(), self.current_dt.date() + timedelta(days=3))
 
     def test_question_content(self):
         question = Question.objects.get(pk=1)

@@ -1,19 +1,45 @@
-from django.db import models
-from django.db.models import fields
 from rest_framework import serializers
+from django.urls import reverse
 
-from polls.models import Poll
+from polls.models import Poll, Question
+
+
+class QuestionForPollSerializer(serializers.HyperlinkedModelSerializer):
+    url_question_actions = serializers.SerializerMethodField()
+
+    def get_url_question_actions(self, obj):
+        request = self.context.get('request')
+        return request.build_absolute_uri('{}{}/'.format(reverse('polls-question', args=[obj.poll.id]), str(obj.id)))
+
+    class Meta:
+        model = Question
+        fields = ['id', 'text', 'question_type', 'url_question_actions']
 
 
 class PollSerializer(serializers.ModelSerializer):
+    questions = QuestionForPollSerializer(many=True)
+    url_poll_detail = serializers.HyperlinkedIdentityField(view_name='polls-detail')
+    url_add_question = serializers.HyperlinkedIdentityField(view_name='polls-question')
+
+    def create(self, validated_data):
+        try:
+            questions_data = validated_data.pop('questions')
+        except KeyError as err:
+            questions_data = {}
+
+        poll = Poll.objects.create(**validated_data)
+        for question_data in questions_data:
+            Question.objects.create(poll=poll, **question_data)
+        return poll
+
     def update(self, instance, validated_data):
         if 'start_at' in validated_data:
             raise serializers.ValidationError({
                 'start_at': 'You must not change this field.',
             })
-
         return super().update(instance, validated_data)
 
     class Meta:
         model = Poll
         fields = '__all__'
+        extra_field = ['url_detail', 'url_question', ]
