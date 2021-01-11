@@ -30,9 +30,10 @@ class PollViewSet(viewsets.ModelViewSet):
         if request.method == 'DELETE':
             question.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            serializer = QuestionForPollSerializer(question, data=request.data, context={'request': request})
+        if request.method == 'PUT' or request.method == 'PATCH':
+            serializer = QuestionForPollSerializer(
+                question, data=request.data, context={'request': request}, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
+                return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -1,9 +1,10 @@
+from django.db.models.query_utils import Q
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
 import json
 
-from polls.models import Poll
+from polls.models import Poll, Question
 from .common import CommonTest, DEFAULT_PASSWORD
 
 
@@ -13,6 +14,12 @@ def _get_polls_data(val=0):
         "description": f"test description-{val}",
         "start_at": f"2021-0{val}-08T19:00:00.000000Z",
         "end_at": f"2021-0{val}-10T18:00:00.000000Z"
+    }
+
+def _get_questions_data(val=0):
+    return {
+        "text": f"test-question-{val}",
+        "question_type": Question.SELECT_MULTIPLE
     }
 
 
@@ -88,3 +95,63 @@ class PollApiTest(CommonTest, APITestCase):
 
         poll = Poll.objects.get(pk=1)
         self.assertTrue('7' in poll.title)
+
+    def test_crud_questions(self):
+        self._do_login(self.the_staff_user)
+
+        # Add poll with question
+        tmp_data = _get_polls_data(val=1)
+        tmp_data['questions'] = [_get_questions_data()]
+        response = self.client.post(
+            reverse('polls-list'),
+            data=json.dumps(tmp_data),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        poll = Poll.objects.get(pk=1)
+        question = Question.objects.get(pk=1)
+        self.assertEqual(question.poll.pk, poll.pk)
+
+        # Add question to poll
+        new_question_data = _get_questions_data(val=1)
+        response = self.client.post(
+            reverse('polls-question', args=[poll.pk]),
+            data=json.dumps(new_question_data),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        new_question = Question.objects.get(pk=2)
+        self.assertEqual(new_question.poll.pk, poll.pk)
+
+        # Delete question
+        response = self.client.delete(
+            '{}{}/'.format(reverse('polls-question', args=[poll.pk]), new_question.pk)
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(Question.objects.all().count(), 1)
+
+        # Patch question
+        self.assertEqual(question.question_type, Question.SELECT_MULTIPLE)
+        question_patch_data = {
+            'question_type': Question.SELECT
+        }
+        response = self.client.patch(
+            '{}{}/'.format(reverse('polls-question', args=[poll.pk]), question.pk),
+            data=json.dumps(question_patch_data),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.assertEqual(Question.objects.get(pk=1).question_type, Question.SELECT)
+
+        # Put question
+        response = self.client.put(
+            '{}{}/'.format(reverse('polls-question', args=[poll.pk]), question.pk),
+            data=json.dumps(_get_questions_data(val=77)),
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        modified_question = Question.objects.get(pk=question.pk)
+        self.assertEqual(modified_question.question_type, Question.SELECT_MULTIPLE)
+        self.assertTrue('77' in modified_question.text)
