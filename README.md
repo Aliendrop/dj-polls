@@ -1,8 +1,8 @@
 # Polls App API
 ## Install locally
 ```
-pip install -r requirements/common.py
-pip install -r requirements/dev.py (optional)
+pip install -r requirements/common.txt
+pip install -r requirements/dev.txt (optional)
 cd back; python manage.py migrate; python manage.py test; python manage.py runserver
 ```
 ## API
