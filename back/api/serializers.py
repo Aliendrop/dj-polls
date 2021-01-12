@@ -47,7 +47,6 @@ class PollSerializer(serializers.ModelSerializer):
 
 
 class ResponseSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Response
         fields = ['id', 'user', 'identifier', 'created_at', ]

@@ -14,7 +14,7 @@ cd back; python manage.py migrate; python manage.py test; python manage.py runse
 | Изменение/удаление вопросов в опросе | /api/polls/<poll_id>/question/<question_id>/ | PUT, PATCH, DELETE | IsStaffUserOrReadOnly |
 | Прохождение опроса | /api/user-response/<poll_id>/ | POST | AllowAny |
 | Ответ на вопрос в опросе | /api/user-response/<poll_id>/question/<question_id>/ | POST | AllowAny |
-| Получение пройденных пользователем опросов | /api/user-response/<user_id>/ | GET | AllowAny |
+| Получение пройденных пользователем опросов | /api/user-statistics/<user_id>/ | GET | AllowAny |
 | Получение детализации по ответам пройденного пользователем опроса | /api/user-detail/<response_id>/ | GET | AllowAny |
 | Получение ключа доступа | /api/api-token-auth/ | POST | AllowAny |
 ### About

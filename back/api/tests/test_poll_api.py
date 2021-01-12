@@ -1,4 +1,3 @@
-from django.db.models.query_utils import Q
 from rest_framework.test import APITestCase
 from rest_framework import status
 from django.urls import reverse
