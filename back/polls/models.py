@@ -2,9 +2,6 @@ from django.db import models
 from django.conf import settings
 import uuid
 
-from django.db.models.deletion import SET_NULL
-
-
 class CommonModel(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     updated_at = models.DateTimeField(auto_now=True, editable=False)
@@ -44,7 +41,7 @@ class Question(models.Model):
 
 class Response(CommonModel):
     poll = models.ForeignKey(Poll, on_delete=models.CASCADE, related_name='responses')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=SET_NULL)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL)
     identifier = models.UUIDField(default=uuid.uuid4, editable=False)
     confirm = models.BooleanField(default=False)
 
