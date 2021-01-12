@@ -9,7 +9,7 @@ cd back; python manage.py migrate; python manage.py test; python manage.py runse
 | Function | URL | Method | Rights |
 | ------ | ------ | ------ | ------ |
 | Получение списка активных опросов/добавление опросов | /api/polls/ | GET, POST | IsStaffUserOrReadOnly |
-| Изменение/удаление опросов | /api/polls/<poll_id> | GET, PUT, PATCH, DELETE | IsStaffUserOrReadOnly |
+| Изменение/удаление опросов | /api/polls/<poll_id>/ | GET, PUT, PATCH, DELETE | IsStaffUserOrReadOnly |
 | Добавление вопросов в опросе | /api/polls/<poll_id>/question/ | POST | IsStaffUserOrReadOnly |
 | Изменение/удаление вопросов в опросе | /api/polls/<poll_id>/question/<question_id>/ | PUT, PATCH, DELETE | IsStaffUserOrReadOnly |
 | Прохождение опроса | /api/user-response/<poll_id>/ | POST | AllowAny |
