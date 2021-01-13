@@ -1,5 +1,6 @@
 # Polls App API
-## Install locally
+[![Build Status](https://travis-ci.com/Aliendrop/dj-polls.svg?branch=master)](https://travis-ci.com/Aliendrop/dj-polls)
+## Install & run locally
 ```
 pip install -r requirements/common.txt
 pip install -r requirements/dev.txt (optional)
