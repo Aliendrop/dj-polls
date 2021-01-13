@@ -6,4 +6,4 @@ install:
 before_script:
   - python back/manage.py migrate
 script:
-  - python back/manage.py test
+  - python back/manage.py test polls api
