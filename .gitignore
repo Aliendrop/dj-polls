@@ -2,6 +2,7 @@
 .vscode/
 back/static/*
 !back/static/.gitkeep 
+front/node_modules/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

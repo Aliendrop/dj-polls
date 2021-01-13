@@ -1,4 +1,5 @@
 BACK = back/
+FRONT = front/
 MANAGE = python $(BACK)manage.py
 
 
@@ -18,3 +19,6 @@ mg:
 
 dev-up:
 	docker-compose -f docker-compose.dev.yml up -d --build
+
+vdev:
+	@cd $(FRONT); npm run serve
