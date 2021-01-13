@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  back:
+    container_name: polls-dev
+    build:
+      context: ./
+      dockerfile: ./Dockerfile.back.dev
+    command: gunicorn project.wsgi:application --bind 0.0.0.0:8000
+    ports:
+      - 8004:8000
+    restart: always
