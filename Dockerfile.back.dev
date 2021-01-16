@@ -9,7 +9,7 @@ COPY ./requirements/common.txt ./
 
 RUN \
     pip install gunicorn && \
-    pip install --no-cache-dir -r common.txt --no-cache-dir
+    pip install --no-cache-dir -r common.txt
 
 COPY ./back/ ./
 
