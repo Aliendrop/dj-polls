@@ -6,7 +6,7 @@ install:
   - pip install coveralls
 script:
   - python back/manage.py test polls api
-  - coverage run --source=back/manage.py test polls api
+  - coverage run --source=. back/manage.py test polls api
 after_success:
   coveralls
 branches:
