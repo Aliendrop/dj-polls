@@ -9,7 +9,7 @@ pip install -r requirements/dev.txt (optional)
 cd back; python manage.py migrate; python manage.py test; python manage.py runserver
 ```
 ## API
-| Function | URL | Method | Rights |
+| Action | Endpoint | Method | Permission |
 | ------ | ------ | ------ | ------ |
 | Получение списка активных опросов/добавление опросов | /api/polls/ | GET, POST | IsStaffUserOrReadOnly |
 | Изменение/удаление опросов | /api/polls/<poll_id>/ | GET, PUT, PATCH, DELETE | IsStaffUserOrReadOnly |

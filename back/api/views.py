@@ -8,13 +8,13 @@ from polls.models import Answer, Poll, Question
 from polls.models import Response as Responce_
 from .serializers import AnswerSerializer, PollSerializer, QuestionForPollSerializer, ResponseSerializer
 from .serializers import ResponseForUserSerializer, ResponseDetailForUserSerializer
-from .permissions import IsAdminUserOrReadOnly
+from .permissions import IsStaffUserOrReadOnly
 
 
 class PollViewSet(viewsets.ModelViewSet):
     queryset = Poll.objects.all().order_by('-start_at', '-end_at')
     serializer_class = PollSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsStaffUserOrReadOnly]
 
     @action(detail=True, methods=["post"])
     def question(self, request, pk=None):
