@@ -1,6 +1,7 @@
 # Polls App API
 [![Build Status](https://travis-ci.com/Aliendrop/dj-polls.svg?branch=master)](https://travis-ci.com/Aliendrop/dj-polls)
 [![Coverage Status](https://coveralls.io/repos/github/Aliendrop/dj-polls/badge.svg?branch=master)](https://coveralls.io/github/Aliendrop/dj-polls?branch=master)
+[![Build Status](https://dev.azure.com/dmitrytomshin/dmitrytomshin/_apis/build/status/Aliendrop.dj-polls?branchName=master)](https://dev.azure.com/dmitrytomshin/dmitrytomshin/_build/latest?definitionId=1&branchName=master)
 ## Install & run locally
 ```
 pip install -r requirements/common.txt
